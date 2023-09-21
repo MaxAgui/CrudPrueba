@@ -45,7 +45,7 @@ export const ROUTES: Routes = [
         } as SBRouteData,
     },
     {
-        path: 'update-user',
+        path: 'update-user/:id',
         canActivate: [],
         component: authContainers.UpdateUserComponent,
         data: {

@@ -26,7 +26,7 @@
                 <td><ngb-highlight [result]="country.rol" [term]="countryService.searchTerm"></ngb-highlight></td>
                 <td><ngb-highlight [result]="country.sector" [term]="countryService.searchTerm"></ngb-highlight></td>
                 <td>
-                    <a class="btn btn-primary btn-circle btn-xs" routerLink="/auth/update-user" ><i class="fas fa-pen-to-square"></i></a>
+                    <a class="btn btn-primary btn-circle btn-xs" routerLink="/auth/update-user/{{country.id}}" ><i class="fas fa-pen-to-square"></i></a>
                     <a class="btn btn-danger btn-circle btn-xs" (click)="countryService.deleteCountry(country.id)"><i class="fas fa-trash"></i></a>
                 </td>
 

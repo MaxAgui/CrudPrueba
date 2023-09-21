@@ -31,10 +31,13 @@ export class UserService {
         const url = 'http://localhost:8080/api/usuarios';
 
         // Datos que quieres enviar en el cuerpo de la solicitud
+
         const data = {
-        nombre: `${user.nombre}`,
-        correo: `${user.correo}`
-        };
+            nombre: `${user.nombre}`,
+            correo: `${user.correo}`,
+            sector: `${user.sector}`,
+            };
+
 
         // Configuración de la solicitud
         const opciones = {
@@ -59,16 +62,40 @@ export class UserService {
         return this.http.post<any>('http://localhost:8080/api/usarios', user);
       }
 
-      updateUser(user: any): Observable<any> {
+    updateUser(user: any,id:any): Observable<any> {
         console.log("messi",user)
         // URL de la API donde quieres hacer el POST
-        const url = 'http://localhost:8080/api/usuarios/2';
+        const url = `http://localhost:8080/api/usuarios/${id}`;
 
         // Datos que quieres enviar en el cuerpo de la solicitud
-        const data = {
-        nombre: `${user.nombre}`,
-        correo: `${user.correo}`
-        };
+        interface UserData {
+            nombre?: string;
+            correo?: string;
+            sector?: string;
+            rol?: string;
+          }
+
+        const data:UserData = {};
+
+        console.log('el NOMBRE',user.nombre)
+
+        if (user.nombre !== null && user.nombre !== '') {
+            data.nombre = user.nombre;
+        }
+
+        if (user.correo !== null && user.correo !== '') {
+            data.correo = user.correo;
+        }
+
+        if (user.sector !== null && user.sector !== '') {
+            data.sector = user.sector;
+        }
+
+        if (user.rol !== null && user.rol !== '') {
+            data.rol = user.rol;
+        }
+
+        console.log('dataaaaaa',data)
 
         // Configuración de la solicitud
         const opciones = {
@@ -90,6 +117,9 @@ export class UserService {
         .then(data => {
             console.log('Respuesta del servidor:', data);
           })
+
         return this.http.post<any>('http://localhost:8080/api/usarios', user);
       }
+
+
 }

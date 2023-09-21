@@ -11,7 +11,8 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
     user = {
         nombre: '',
-        correo: ''
+        correo: '',
+        sector: '',
       };
     constructor(private userService: UserService,private router: Router) {}
     ngOnInit() {}
