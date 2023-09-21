@@ -2,6 +2,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SBRouteData } from '@modules/navigation/models';
+import { FormsModule } from '@angular/forms';
 
 /* Module */
 import { AuthModule } from './auth.module';
@@ -43,10 +44,18 @@ export const ROUTES: Routes = [
             title: 'Pages Forgot Password - SB Admin Angular',
         } as SBRouteData,
     },
+    {
+        path: 'update-user',
+        canActivate: [],
+        component: authContainers.UpdateUserComponent,
+        data: {
+            title: 'Update User - SB Admin Angular',
+        } as SBRouteData,
+    }
 ];
 
 @NgModule({
-    imports: [AuthModule, RouterModule.forChild(ROUTES)],
+    imports: [AuthModule, RouterModule.forChild(ROUTES),FormsModule],
     exports: [RouterModule],
 })
 export class AuthRoutingModule {}

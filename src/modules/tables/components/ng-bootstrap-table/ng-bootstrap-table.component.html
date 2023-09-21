@@ -1,20 +1,38 @@
 <form>
-    <div class="form-group form-inline">Full text search: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="countryService.searchTerm" /><span class="ml-3" *ngIf="countryService.loading$ | async">Loading...</span></div>
+    <div class="form-group form-inline d-flex align-items-center justify-content-between">
+        <span class="mr-auto">Full text search: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="countryService.searchTerm" /></span>
+        <span class="ml-3" *ngIf="countryService.loading$ | async">Loading...</span>
+        <a routerLink="/auth/register" class="btn btn-primary btn-circle btn-xs"><i class="fas fa-plus"></i> Add User</a>
+    </div>
+
     <table class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col" sbSortable="name" (sort)="onSort($event)"><span>Country</span><sb-sort-icon *ngIf='sortedColumn === "name"' [direction]="sortedDirection"></sb-sort-icon></th>
-                <th scope="col" sbSortable="area" (sort)="onSort($event)"><span>Area</span><sb-sort-icon *ngIf='sortedColumn === "area"' [direction]="sortedDirection"></sb-sort-icon></th>
-                <th scope="col" sbSortable="population" (sort)="onSort($event)"><span>Population</span><sb-sort-icon *ngIf='sortedColumn === "population"' [direction]="sortedDirection"></sb-sort-icon></th>
+                <th scope="col" sbSortable="nombre" (sort)="onSort($event)"><span>Nombre</span><sb-sort-icon *ngIf='sortedColumn === "nombre"' [direction]="sortedDirection"></sb-sort-icon></th>
+                <th scope="col" sbSortable="correo" (sort)="onSort($event)"><span>Correo</span><sb-sort-icon *ngIf='sortedColumn === "correo"' [direction]="sortedDirection"></sb-sort-icon></th>
+                <th scope="col" sbSortable="rol" (sort)="onSort($event)"><span>Rol</span><sb-sort-icon *ngIf='sortedColumn === "rol"' [direction]="sortedDirection"></sb-sort-icon></th>
+                <th scope="col" sbSortable="sector" (sort)="onSort($event)"><span>Sector</span><sb-sort-icon *ngIf='sortedColumn === "sector"' [direction]="sortedDirection"></sb-sort-icon></th>
+                <th scope="col"  ><span>Acciones</span></th>
+                <!-- <th scope="col" sbSortable="area" (sort)="onSort($event)"><span>Area</span><sb-sort-icon *ngIf='sortedColumn === "area"' [direction]="sortedDirection"></sb-sort-icon></th>
+                <th scope="col" sbSortable="population" (sort)="onSort($event)"><span>Population</span><sb-sort-icon *ngIf='sortedColumn === "population"' [direction]="sortedDirection"></sb-sort-icon></th> -->
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let country of countries$ | async">
                 <th scope="row">{{ country.id }}</th>
-                <td><img class="mr-2" [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" style="width: 20px" /><ngb-highlight [result]="country.name" [term]="countryService.searchTerm"></ngb-highlight></td>
-                <td><ngb-highlight [result]="country.area | number" [term]="countryService.searchTerm"></ngb-highlight></td>
-                <td><ngb-highlight [result]="country.population | number" [term]="countryService.searchTerm"></ngb-highlight></td>
+                <td><img class="mr-2"  style="width: 20px" /><ngb-highlight [result]="country.nombre" [term]="countryService.searchTerm"></ngb-highlight></td>
+                <td><ngb-highlight [result]="country.correo" [term]="countryService.searchTerm"></ngb-highlight></td>
+                <td><ngb-highlight [result]="country.rol" [term]="countryService.searchTerm"></ngb-highlight></td>
+                <td><ngb-highlight [result]="country.sector" [term]="countryService.searchTerm"></ngb-highlight></td>
+                <td>
+                    <a class="btn btn-primary btn-circle btn-xs" routerLink="/auth/update-user" ><i class="fas fa-pen-to-square"></i></a>
+                    <a class="btn btn-danger btn-circle btn-xs" (click)="countryService.deleteCountry(country.id)"><i class="fas fa-trash"></i></a>
+                </td>
+
+
+                <!-- <td><ngb-highlight [result]="country.area | number" [term]="countryService.searchTerm"></ngb-highlight></td>
+                <td><ngb-highlight [result]="country.population | number" [term]="countryService.searchTerm"></ngb-highlight></td> -->
             </tr>
         </tbody>
     </table>

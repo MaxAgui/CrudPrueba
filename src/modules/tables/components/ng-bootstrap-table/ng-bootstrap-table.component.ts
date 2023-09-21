@@ -21,6 +21,8 @@ import { Observable } from 'rxjs';
 export class NgBootstrapTableComponent implements OnInit {
     @Input() pageSize = 4;
 
+    countries: Country[] = [];
+
     countries$!: Observable<Country[]>;
     total$!: Observable<number>;
     sortedColumn!: string;
@@ -34,7 +36,17 @@ export class NgBootstrapTableComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+
         this.countryService.pageSize = this.pageSize;
+        this.countryService.countries$.subscribe(countries => {
+            this.countries = countries;
+          });
+
+          // Suscripción al observable para actualizar después de eliminar
+          this.countryService.countryDeleted$.subscribe(deletedCountryId => {
+            // Eliminación exitosa, actualizamos la lista de países
+            this.countries = this.countries.filter(country => country.id !== deletedCountryId);
+          });
         this.countries$ = this.countryService.countries$;
         this.total$ = this.countryService.total$;
     }
@@ -46,4 +58,5 @@ export class NgBootstrapTableComponent implements OnInit {
         this.countryService.sortDirection = direction;
         this.changeDetectorRef.detectChanges();
     }
+
 }

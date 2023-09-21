@@ -5,6 +5,7 @@ import { SortDirection } from '@modules/tables/directives';
 import { Country } from '@modules/tables/models';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { debounceTime, delay, switchMap, tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 interface SearchResult {
     countries: Country[];
@@ -36,9 +37,13 @@ function sort(countries: Country[], column: string, direction: string): Country[
 
 function matches(country: Country, term: string, pipe: PipeTransform) {
     return (
-        country.name.toLowerCase().includes(term.toLowerCase()) ||
-        pipe.transform(country.area).includes(term) ||
-        pipe.transform(country.population).includes(term)
+        country.nombre.toLowerCase().includes(term.toLowerCase()) ||
+        country.correo.toLowerCase().includes(term.toLowerCase()) ||
+        country.rol.toLowerCase().includes(term.toLowerCase()) ||
+        country.sector.toLowerCase().includes(term.toLowerCase())
+        // ||
+        // pipe.transform(country.area).includes(term) ||
+        // pipe.transform(country.population).includes(term)
     );
 }
 
@@ -57,7 +62,10 @@ export class CountryService {
         sortDirection: '',
     };
 
-    constructor(private pipe: DecimalPipe) {
+    private countryDeletedSubject = new Subject<number>();
+    countryDeleted$ = this.countryDeletedSubject.asObservable();
+
+    constructor(private http: HttpClient,private pipe: DecimalPipe) {
         this._search$
             .pipe(
                 tap(() => this._loading$.next(true)),
@@ -116,6 +124,27 @@ export class CountryService {
     private _search(): Observable<SearchResult> {
         const { sortColumn, sortDirection, pageSize, page, searchTerm } = this._state;
 
+        // return this.http.get<Country[]>('localhost:8080/api/usuarios').pipe(
+        //     switchMap(countries => {
+        //         // 1. sort (si es necesario)
+        //         if (sortColumn && sortDirection) {
+        //             countries = sort(countries, sortColumn, sortDirection);
+        //         }
+
+        //         // 2. filter
+        //         countries = countries.filter(country => matches(country, searchTerm, this.pipe));
+        //         const total = countries.length;
+        //         // 3. paginate
+        //         countries = countries.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
+
+        //         console.log(countries)
+
+        //         return of({ countries, total });
+
+        //                 })
+        //             )
+
+
         // 1. sort
         let countries = sort(COUNTRIES, sortColumn, sortDirection);
 
@@ -126,5 +155,28 @@ export class CountryService {
         // 3. paginate
         countries = countries.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
         return of({ countries, total });
+    }
+
+    // Método para eliminar un país
+    deleteCountry(id: number): Observable<void> {
+        console.log(id)
+
+        // Aquí deberías implementar la lógica para enviar una solicitud de eliminación al servidor
+        // y manejar la respuesta
+        // Supongamos que tienes una API que acepta solicitudes DELETE a una URL como `'/api/countries/:id'`
+        // Puedes usar Angular HttpClient para enviar la solicitud DELETE
+        fetch(`http://localhost:8080/api/usuarios/${id}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              // Puedes agregar otros encabezados si son necesarios
+            },
+          })
+        window.location.reload();
+
+        return this.http.delete<void>(`http://localhost:8080/api/usuarios/${id}`).pipe(
+        // Emitir el ID del país eliminado después de una eliminación exitosa
+        tap(() => this.countryDeletedSubject.next(id))
+        );
     }
 }

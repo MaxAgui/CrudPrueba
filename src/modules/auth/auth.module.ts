@@ -19,6 +19,7 @@ import * as authGuards from './guards';
 
 /* Services */
 import * as authServices from './services';
+import { UpdateUserComponent } from './containers/update-user/update-user.component';
 
 @NgModule({
     imports: [
@@ -30,7 +31,7 @@ import * as authServices from './services';
         NavigationModule,
     ],
     providers: [...authServices.services, ...authGuards.guards],
-    declarations: [...authContainers.containers, ...authComponents.components],
+    declarations: [...authContainers.containers, ...authComponents.components, UpdateUserComponent],
     exports: [...authContainers.containers, ...authComponents.components],
 })
 export class AuthModule {}
