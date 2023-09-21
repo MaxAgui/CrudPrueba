@@ -2,13 +2,13 @@ import { SideNavItems, SideNavSection } from '@modules/navigation/models';
 
 export const sideNavSections: SideNavSection[] = [
     {
-        text: 'CORE',
+        text: 'TRAFICO',
         items: ['dashboard'],
     },
-    {
-        text: 'INTERFACE',
-        items: ['layouts', 'pages'],
-    },
+    // {
+    //     text: 'INTERFACE',
+    //     items: ['layouts', 'pages'],
+    // },
     {
         text: 'ADDONS',
         items: ['charts', 'tables'],
@@ -83,6 +83,16 @@ export const sideNavItems: SideNavItems = {
     tables: {
         icon: 'table',
         text: 'Tables',
-        link: '/tables',
+        submenu: [
+            {
+                text: 'Usuarios',
+                link: '/tables',
+            },
+            {
+                text: 'Equipos',
+                link: '/tables',
+            },
+        ],
+        // link: '/tables',
     },
 };
